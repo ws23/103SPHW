@@ -78,6 +78,7 @@ SIC Instruction Format
 	Indexed x = 1       TA = address + (X)
   
 Types of Record in SIC Object Code
+
 	Header record: 
 		Col. 1      H
 		Col. 2-7    Program name
@@ -95,6 +96,7 @@ Types of Record in SIC Object Code
 		Col. 2-7    Address of first executable instruction in object program (hexadecimal) 
 
 Example Source Program
+
   COPY    START   1000
   FIRST   STL     RETADR
   CLOOP   JSUB    RDREC
@@ -147,6 +149,7 @@ Example Source Program
           END     FIRST
   
 Example Target Program
+
   HCOPY  00100000107A
    ^     ^     ^
   T0010001E1410334820390010362810303010154820613C100300102A0C103900102D
