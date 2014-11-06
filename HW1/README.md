@@ -1,15 +1,18 @@
 Programming Assignment #1
 
 Assignment Description
+
 	Write an SIC assembler that reads an SIC assembly program, translates SIC statements into their machine code equivalents, and generates an object file. 
   
 Goals
+
 	1. Get familiar with C programming language. 
 	2. Learn to use the I/O facilities and library functions provided by standard C. 
 	3. Get experience with the system-level programming. 
 	4. Get experience with separate compilation, make utility, and C debugger. 
   
 Guideline: 
+
 	1. You have to demonstrate your program in person. 
 	2. When demonstrating your program, have one of the following formats of the report with you: 
 		1) A pdf file onexternal storage tha is accessible with USB interface, or
@@ -24,13 +27,14 @@ Guideline:
 		6) Discussion. 
     
 --
-  
+
 Programming Assignment #1 Addendum
-  
+
 Assembler Directives
 	START, END, BYTE, WORD, RESB, and RESW. 
     
 Format of SIC Assembly Program
+
 	1. Each line has 4 fields: 
 		1) (Optional) Label (up to 6 characters) 
 		2) Operation
@@ -38,8 +42,10 @@ Format of SIC Assembly Program
 		4) (optional) COmment
 	2. If the first character is a '.', the whole line is a comment. 
 	3. There is no blank line in an SIC assembly program source file, except for the last line. 
-  
+
+
 SIC OPCODE Table
+
 	Mnemonic  Opcode
 	  ADD   18
 	  DIV   24
@@ -69,6 +75,7 @@ SIC OPCODE Table
 	  TD    10
 
 SIC Instruction Format
+
 	opcode: 8 bits
 	x: 1 bit
 	address: 15 bits
@@ -150,17 +157,17 @@ Example Source Program
   
 Example Target Program
 
-  HCOPY  00100000107A
-   ^     ^     ^
-  T0010001E1410334820390010362810303010154820613C100300102A0C103900102D
-   ^     ^ ^     ^     ^     ^     ^     ^     ^     ^     ^     ^
-  T00101E150C10364820610810334C0000454F46000003000000
-   ^     ^ ^     ^     ^     ^     ^     ^     ^
-  T0020391E041030001030E0205D30203FD8205D2810303020575490392C205E38203F
-   ^     ^ ^     ^     ^     ^     ^     ^     ^     ^     ^     ^
-  T0020571C1010364C0000F1001000041030E02079302064509039DC20792C1036
-   ^     ^ ^     ^     ^ ^     ^     ^     ^     ^     ^     ^    
-  T002073073820644C000005
-   ^     ^ ^     ^     ^
-  E001000
-   ^
+	HCOPY  00100000107A
+	 ^     ^     ^
+	T0010001E1410334820390010362810303010154820613C100300102A0C103900102D
+	 ^     ^ ^     ^     ^     ^     ^     ^     ^     ^     ^     ^
+	T00101E150C10364820610810334C0000454F46000003000000
+	 ^     ^ ^     ^     ^     ^     ^     ^     ^
+	T0020391E041030001030E0205D30203FD8205D2810303020575490392C205E38203F
+	 ^     ^ ^     ^     ^     ^     ^     ^     ^     ^     ^     ^
+	T0020571C1010364C0000F1001000041030E02079302064509039DC20792C1036
+	 ^     ^ ^     ^     ^ ^     ^     ^     ^     ^     ^     ^    
+	T002073073820644C000005
+	 ^     ^ ^     ^     ^
+	E001000
+	 ^
