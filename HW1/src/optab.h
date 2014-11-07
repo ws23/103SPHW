@@ -1,3 +1,5 @@
+#include <stdint.h>
+
 typedef struct _optab{
 	char code[10]; 
 	uint8_t opcode; 
