@@ -1,15 +1,15 @@
 #include <stdio.h>
 #include <string.h>
 
-int main(int argc, int *argv[]){
+int main(int argc, char *argv[]){
 	FILE *fin, *fout; 
 	char SICCode[1000][100], filename[100]; 
 	int line; 
-
+	
 	// If argument error, then exit. 
-	if(argc!=2 || argc!=3){
+	if(argc!=2 && argc!=3){
 		printf("Argument Error!!\n"); 
-		printf("Usage: %s SIC_Code [Object_Code]", argv[0]); 
+		printf("Usage: %s SIC_Code [Object_Code]\n", argv[0]); 
 		return 0; 
 	}
 
@@ -20,15 +20,18 @@ int main(int argc, int *argv[]){
 		printf("SIC Source Code read Error. \n"); 	
 		return 0; 
 	}
-	
+
+	printf("-------\n"); 	
 		// Store the Source Code into array. 
 	line = 0; 
 	while(fgets(SICCode[line++], 100, fin))
 		; 
 
+	printf("-------\n"); 
 	// To assemble the SIC Code to Object Code. 
 	assembler(SICCode, line); 			
 
+	printf("-------\n"); 
 	// To store object code to the target file. 
 	if(argc==3)
 		fout = fopen(argv[2], "w"); 
@@ -36,6 +39,7 @@ int main(int argc, int *argv[]){
 		strcat(argv[1], ".out");
 		fout = fopen(argv[1], "w"); 
 	}
+	printf("------\n"); 
 	toTarget(fout); 
 
 	return 0; 	
