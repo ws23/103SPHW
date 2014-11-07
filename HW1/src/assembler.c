@@ -45,11 +45,16 @@ void showSym(){
 		printf("%10s %u\n", sym[i].symbol, sym[i].addr); 	
 }
 
-void preprocess(char **sic, int n){
+void addCode(char sic[]){
+	
+}
+
+void preprocess(char *sic[], int n){
 	// 	To make each line to be four columns. 
 	int i, j, count; 
-	char *ptr, tmp[10][100]; 
+	char *ptr, tmp[10][100]; 	
 
+	printf("XD1\n"); 
 	ptr = strtok(sic[0], " "); 
 	strcpy(ins[0].label, ptr); 
 	ptr = strtok(NULL, " "); 
@@ -60,6 +65,7 @@ void preprocess(char **sic, int n){
 	if(ptr!=NULL)
 		strcpy(ins[0].comment, ptr); 
 	
+	printf("XD2\n"); 
 	for(i=1;i<n;i++){
 		if(sic[i][0]=='.'){
 			strcpy(ins[i].operation, "."); 
@@ -98,6 +104,7 @@ void preprocess(char **sic, int n){
 			strcpy(ins[i].operation, tmp[1]); 
 		}
 	}
+	printf("XD3\n"); 
 }
 
 void pass1(int n){
@@ -195,7 +202,7 @@ void pass2(int n){
 	}
 }
 
-void assembler(char **sic, int n){
+void assembler(int n){
 	
 	memset(sym, 0, sizeof(sym)); 
 	memset(ins, 0, sizeof(ins)); 

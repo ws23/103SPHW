@@ -3,8 +3,8 @@
 
 int main(int argc, char *argv[]){
 	FILE *fin, *fout; 
-	char SICCode[1000][100], filename[100]; 
-	int line; 
+	char SICCode[100], filename[100]; 
+	int line, i;  
 	
 	// If argument error, then exit. 
 	if(argc!=2 && argc!=3){
@@ -24,12 +24,17 @@ int main(int argc, char *argv[]){
 	printf("-------\n"); 	
 		// Store the Source Code into array. 
 	line = 0; 
-	while(fgets(SICCode[line++], 100, fin))
-		; 
-
+	while(fgets(SICCode, 100, fin)){
+		for(i=0;SICCode[i];i++)
+			if(SICCode[i]=='\n' || SICCode[i]=='\r')
+				SICCode[i] = 0; 
+		addCode(SICCode);
+		line++; 
+	}
+		
 	printf("-------\n"); 
 	// To assemble the SIC Code to Object Code. 
-	assembler(SICCode, line); 			
+	assembler(line); 			
 
 	printf("-------\n"); 
 	// To store object code to the target file. 

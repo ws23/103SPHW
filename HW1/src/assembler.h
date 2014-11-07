@@ -1,3 +1,4 @@
-void assembler(char**, int);
+void addCode(char*); 
+void assembler(int);
 void toTarget(FILE*);  
 
