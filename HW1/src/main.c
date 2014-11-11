@@ -25,10 +25,13 @@ int main(int argc, char *argv[]){
 		// Store the Source Code into array. 
 	line = 0; 
 	while(fgets(SICCode, 100, fin)){
+		printf("11111\n"); 
 		for(i=0;SICCode[i];i++)
 			if(SICCode[i]=='\n' || SICCode[i]=='\r')
 				SICCode[i] = 0; 
+		printf("22222\n"); 
 		addCode(SICCode);
+		printf("33333\n"); 
 		line++; 
 	}
 		

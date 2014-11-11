@@ -46,65 +46,77 @@ void showSym(){
 }
 
 void addCode(char sic[]){
+	// To make the SIC Code to be four columns. 
+	int j, count; 
+	char *ptr, tmp[10][100]; 
+	static int i=0; 
+
+	if(!i){ // First line of code
+		printf("YA"); 
+		ptr = strtok(sic, " "); 
+		strcpy(ins[0].label, ptr); 
+		ptr = strtok(NULL, " "); 
+		strcpy(ins[0].operation, ptr); 
+		ptr = strtok(NULL, " "); 
+		strcpy(ins[0].operands, ptr); 
+		ptr = strtok(NULL, " "); 
+		if(ptr!=NULL)
+			strcpy(ins[0].comment, ptr); 
+		i = 1; 
+		printf("HOO!!\n"); 
+		return; 
+	}
+
+	// comment 
+	if(sic[0]=='.'){
+		printf("COMM");
+		strcpy(ins[i].operation, "."); 
+		printf("ENT!!\n"); 
+		return; 
+	}
 	
-}
+	// Others
+		// To split the Source Code
+	count = 0; 
+	printf("O"); 
+	ptr = strtok(sic, " "); 
+	while(ptr!=NULL){
+		strcpy(tmp[count++], ptr); 
+		ptr = strtok(NULL, " "); 	
+	}
+	strcpy(tmp[count], ptr); 
+	printf("T"); 
 
-void preprocess(char *sic[], int n){
-	// 	To make each line to be four columns. 
-	int i, j, count; 
-	char *ptr, tmp[10][100]; 	
-
-	printf("XD1\n"); 
-	ptr = strtok(sic[0], " "); 
-	strcpy(ins[0].label, ptr); 
-	ptr = strtok(NULL, " "); 
-	strcpy(ins[0].operation, ptr); 
-	ptr = strtok(NULL, " "); 
-	strcpy(ins[0].operands, ptr); 
-	ptr = strtok(NULL, " "); 
-	if(ptr!=NULL)
-		strcpy(ins[0].comment, ptr); 
-	
-	printf("XD2\n"); 
-	for(i=1;i<n;i++){
-		if(sic[i][0]=='.'){
-			strcpy(ins[i].operation, "."); 
-			continue; 
-		}
-
-		// Split the Source Code
-		count = 0; 
-		ptr = strtok(sic[i], " "); 
-		while(ptr!=NULL){
-			strcpy(tmp[count++], ptr); 
-			ptr = strtok(NULL, " "); 
-		}
-		strcpy(tmp[count], ptr); 
-
-
-		// Store to ins
-		for(j=0;j<26;j++){
-			if(strcmp(op[j].code, tmp[0])){
-				strcpy(ins[i].operation, tmp[0]); 
-				if(strcmp(ins[i].operation, "RSUB")){
-					if(tmp[1]!=NULL)
-						strcpy(ins[i].comment, tmp[1]); 
-					break;	
-				}
-				if(tmp[1]==NULL)
-					break;
-				strcpy(ins[i].operands, tmp[1]); 
-				if(tmp[2]==NULL)
-					break;
-				strcpy(ins[i].operands, tmp[2]); 
+		// To Store to ins
+	for(j=0;j<26;j++){
+		if(strcmp(op[j].code, tmp[0])){
+			strcpy(ins[i].operation, tmp[0]); 
+			if(strcmp(ins[i].operation, "RSUB")){
+				if(tmp[1]!=NULL)
+					strcpy(ins[i].comment, tmp[1]); 
+				break;	
 			}
+			if(tmp[1]==NULL)
+				break;
+			strcpy(ins[i].operands, tmp[1]); 
+			if(tmp[2]==NULL)
+				break;
+			strcpy(ins[i].comment, tmp[2]); 
+			break;
 		}
-		if(ins[i].operation[0]!=0){
-			strcpy(ins[i].label, tmp[0]); 
+		if(strcmp(op[j].code, tmp[1])){
+			strcpy(ins[i].label, tmp[0]);
 			strcpy(ins[i].operation, tmp[1]); 
+			if(tmp[2]==NULL)
+				break;
+			strcpy(ins[i].operands, tmp[2]); 
+			if(tmp[3]==NULL)
+				break;
+			strcpy(ins[i].comment, tmp[3]); 
+			break;
 		}
 	}
-	printf("XD3\n"); 
+	printf("HER!!\n"); 
 }
 
 void pass1(int n){
@@ -207,15 +219,8 @@ void assembler(int n){
 	memset(sym, 0, sizeof(sym)); 
 	memset(ins, 0, sizeof(ins)); 
 
-	printf("1\n"); 	
-	preprocess(sic, n);
-	printf("2\n"); 
 	pass1(n); 
-	printf("3\n"); 
-	showIns(); 
-	printf("4\n"); 
 	pass2(n); 
-	printf("5\n"); 	
 }
 
 void toTarget(FILE *fout){
