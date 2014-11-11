@@ -1,4 +1,5 @@
+void ini(); 
 void addCode(char*); 
-void assembler(int);
+void assembler();
 void toTarget(FILE*);  
 

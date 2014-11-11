@@ -21,25 +21,23 @@ int main(int argc, char *argv[]){
 		return 0; 
 	}
 
-	printf("-------\n"); 	
+	printf("-------To Store the Source Code into Array\n"); 	
 		// Store the Source Code into array. 
 	line = 0; 
+	ini(); 
 	while(fgets(SICCode, 100, fin)){
-		printf("11111\n"); 
 		for(i=0;SICCode[i];i++)
 			if(SICCode[i]=='\n' || SICCode[i]=='\r')
 				SICCode[i] = 0; 
-		printf("22222\n"); 
 		addCode(SICCode);
-		printf("33333\n"); 
 		line++; 
 	}
-		
-	printf("-------\n"); 
+	fclose(fin); 
+	printf("-------To assembly\n"); 
 	// To assemble the SIC Code to Object Code. 
 	assembler(line); 			
 
-	printf("-------\n"); 
+	printf("-------To out\n"); 
 	// To store object code to the target file. 
 	if(argc==3)
 		fout = fopen(argv[2], "w"); 
@@ -47,8 +45,9 @@ int main(int argc, char *argv[]){
 		strcat(argv[1], ".out");
 		fout = fopen(argv[1], "w"); 
 	}
-	printf("------\n"); 
-	toTarget(fout); 
+	toTarget(fout, line); 
+	fclose(fout); 
+	printf("------Complete\n"); 
 
 	return 0; 	
 }
