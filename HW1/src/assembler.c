@@ -304,7 +304,8 @@ void toTarget(FILE *fout){
 
 	// Header record
 	fprintf(fout, "H%-6s00%4s%06X\n", ins[0].label, ins[0].operands, ins[N-1].loc-ins[0].loc); 
-/*	fprintf(fout, " ^     ^     ^\n"); //*/
+/*	
+	fprintf(fout, " ^     ^     ^\n"); //*/
 	// Text record
 	front = ins[0].loc;
 	for(i=1;i<N;i+=10){
@@ -355,7 +356,7 @@ void toTarget(FILE *fout){
 
 		// output object code to file
 		fprintf(fout, "T%06X%02X", front, count); 
-		countSpace = 0; 
+		countSpace = 3; 
 		for(j=a;j<b;j++){
 			if(!strcmp(ins[j].operation, "."))
 				continue; 	
@@ -366,7 +367,7 @@ void toTarget(FILE *fout){
 		}
 		fprintf(fout, "\n"); 
 /*
-		for(j=0;j<=countSpace+1;j++){
+		for(j=0;j<countSpace-1;j++){
 			for(k=1;k<space[j];k++)
 				fprintf(fout, " "); 
 			fprintf(fout, "^");	
@@ -396,5 +397,6 @@ void toTarget(FILE *fout){
 		break;
 	}
 	fprintf(fout, "E%06X\n", ins[i].loc);
-/*/	fprintf(fout, " ^\n");  //*/
+/*	
+	fprintf(fout, " ^\n");  //*/
 }
