@@ -19,7 +19,8 @@ typedef struct _field{
 
 symtab sym[1000]; 
 field ins[1000]; 
-int N, sN; 
+int N, sN, start; 
+
 
 void showIns(){
 	int i, len; 
@@ -71,42 +72,46 @@ void addCode(char sic[]){
 	// To make the SIC Code to be four columns. 
 	int j, count; 
 	char *ptr, *cpy, tmp[10][100]; 
-	static int i = 0; 
+	static int i = 0, first = 0; 
 
 	memset(tmp, 0, sizeof(tmp)); 
-	
-	if(!i){ // First line of code
-		ptr = strtok(sic, " ");
+
+	// comment
+	if(sic[0]=='.'){
+		strcpy(ins[i].operation, ".");
+		i++;
+		return;
+	}
+
+
+	// START
+	if(!first){ 
+		ptr = strtok(sic, " \t");
 		cpy = ptr;
-		ptr = strtok(NULL, " "); 
-		strcpy(ins[0].label, cpy); 
+		ptr = strtok(NULL, " \t"); 
+		strcpy(ins[i].label, cpy); 
 		cpy = ptr; 
-		ptr = strtok(NULL, " "); 
-		strcpy(ins[0].operation, cpy); 
+		ptr = strtok(NULL, " \t"); 
+		strcpy(ins[i].operation, cpy); 
 		cpy = ptr; 
-		ptr = strtok(NULL, " "); 
-		strcpy(ins[0].operands, cpy); 
+		ptr = strtok(NULL, " \t"); 
+		strcpy(ins[i].operands, cpy); 
 		if(ptr!=NULL)
-			strcpy(ins[0].comment, ptr);
-		i = 1;
+			strcpy(ins[i].comment, ptr);
+		first = 1;
+		start = i; 
+		i++; 
 	
 		return; 
 	}
 
-	// comment 
-	if(sic[0]=='.'){
-		strcpy(ins[i].operation, ".");
-		i++;  
-		return; 
-	}
-	
 	// Others
 		// To split the Source Code
 	count = 0; 
-	ptr = strtok(sic, " ");
+	ptr = strtok(sic, " \t");
 	while(ptr!=NULL){
 		cpy = ptr; 
-		ptr = strtok(NULL, " "); 
+		ptr = strtok(NULL, " \t"); 
 		strcpy(tmp[count], cpy); 
 		count++; 
 	}
@@ -168,13 +173,16 @@ void pass1(){
 	uint16_t loc;
 	char tmp[100], *ptr;  
 
-	count = atoi(ins[0].operands); 
+	count = atoi(ins[start].operands); 
 	loc = (count/1000)*16*16*16 + ((count%1000)/100)*16*16 + ((count%100)/10)*16 + count%10; 
-	ins[0].loc = loc; 
+	ins[start].loc = loc; 
 
 	count = 0; 
-	for(i=1;i<N;i++){
+	for(i=0;i<N;i++){
 		if(!strcmp(ins[i].operation, "."))
+			continue; 
+
+		if(i<=start)
 			continue; 
 
 		// Give the loc
@@ -303,11 +311,11 @@ void toTarget(FILE *fout){
 	char *ptr, tmp[100]; 
 
 	// Header record
-	fprintf(fout, "H%-6s00%4s%06X\n", ins[0].label, ins[0].operands, ins[N-1].loc-ins[0].loc); 
-/*	
+	fprintf(fout, "H%-6s%.*s%s%06X\n", ins[start].label, 6-strlen(ins[start].operands), "000000", ins[start].operands, ins[N-1].loc-ins[start].loc); 
+//*	
 	fprintf(fout, " ^     ^     ^\n"); //*/
 	// Text record
-	front = ins[0].loc;
+	front = ins[start].loc;
 	for(i=1;i<N;i+=10){
 		// count length
 		count = countSpace = 0; 
@@ -355,6 +363,8 @@ void toTarget(FILE *fout){
 		b = i+j;
 
 		// output object code to file
+		if(count==0)
+			continue; 
 		fprintf(fout, "T%06X%02X", front, count); 
 		countSpace = 3; 
 		for(j=a;j<b;j++){
@@ -366,7 +376,7 @@ void toTarget(FILE *fout){
 			countSpace++; 
 		}
 		fprintf(fout, "\n"); 
-/*
+//*
 		for(j=0;j<countSpace-1;j++){
 			for(k=1;k<space[j];k++)
 				fprintf(fout, " "); 
@@ -397,6 +407,6 @@ void toTarget(FILE *fout){
 		break;
 	}
 	fprintf(fout, "E%06X\n", ins[i].loc);
-/*	
+//*	
 	fprintf(fout, " ^\n");  //*/
 }
